@@ -1,0 +1,4 @@
+interface:
+  display_name: "Omega Production Kit"
+  short_description: "Plan and scaffold production Omega AI infrastructure."
+  default_prompt: "Create an Omega production kit with a physical hardware/rack/wiring plan plus a runnable TypeScript kernel, node runtime agents, Kubernetes, event schemas, observability, and deployable local infrastructure."

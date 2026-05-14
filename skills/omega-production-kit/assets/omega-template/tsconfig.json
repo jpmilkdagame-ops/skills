@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "rootDir": ".",
+    "outDir": "dist"
+  },
+  "include": [
+    "event-bus/**/*.ts",
+    "core/**/*.ts",
+    "omega-kernel.ts",
+    "omega-core/**/*.ts",
+    "omega-kernel/**/*.ts",
+    "services/**/*.ts",
+    "nodes/**/*.ts",
+    "packages/**/*.ts",
+    "apps/**/*.ts"
+  ]
+}

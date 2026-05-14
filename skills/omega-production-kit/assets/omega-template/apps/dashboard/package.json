@@ -1,0 +1,8 @@
+{
+  "name": "@omega/dashboard",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "serve": "python3 -m http.server 5173"
+  }
+}

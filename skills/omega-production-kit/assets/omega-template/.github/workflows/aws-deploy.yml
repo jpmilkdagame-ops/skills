@@ -1,0 +1,33 @@
+name: omega-aws-deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      aws_region:
+        description: AWS region
+        default: OMEGA_AWS_REGION
+        required: true
+      cluster_name:
+        description: EKS cluster name
+        default: OMEGA_PROJECT_NAME-cluster
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ inputs.aws_region }}
+      - uses: hashicorp/setup-terraform@v3
+      - uses: azure/setup-kubectl@v4
+      - name: Deploy Omega to AWS/EKS
+        env:
+          AWS_REGION: ${{ inputs.aws_region }}
+          OMEGA_CLUSTER_NAME: ${{ inputs.cluster_name }}
+        run: bash infra/scripts/aws-deploy.sh

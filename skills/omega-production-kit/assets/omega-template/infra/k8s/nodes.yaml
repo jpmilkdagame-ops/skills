@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omega-node-reasoning
+  namespace: OMEGA_NAMESPACE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: omega-node-reasoning
+  template:
+    metadata:
+      labels:
+        app: omega-node-reasoning
+        omega.ai/role: reasoning-node
+    spec:
+      containers:
+        - name: reasoning-node
+          image: omega/reasoning-node:latest
+          envFrom:
+            - configMapRef:
+                name: omega-platform-config
+          env:
+            - name: NODE_ROLE
+              value: reasoning
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omega-node-automation
+  namespace: OMEGA_NAMESPACE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: omega-node-automation
+  template:
+    metadata:
+      labels:
+        app: omega-node-automation
+        omega.ai/role: automation-node
+    spec:
+      containers:
+        - name: automation-node
+          image: omega/automation-node:latest
+          envFrom:
+            - configMapRef:
+                name: omega-platform-config
+          env:
+            - name: NODE_ROLE
+              value: automation
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi

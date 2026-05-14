@@ -1,0 +1,30 @@
+{
+  "name": "OMEGA_PROJECT_NAME",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "services/*",
+    "nodes/*",
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "docker compose up --build",
+    "dashboard": "npm --workspace @omega/dashboard run serve",
+    "kernel": "ts-node omega-kernel/control-loop.ts",
+    "kernel:once": "OMEGA_KERNEL_MAX_EVENTS=1 ts-node omega-kernel/control-loop.ts",
+    "core": "ts-node omega-core/kernel/loop.ts",
+    "core:once": "OMEGA_CORE_MAX_EVENTS=1 ts-node omega-core/kernel/loop.ts",
+    "system": "ts-node omega-kernel.ts",
+    "system:once": "OMEGA_SYSTEM_MAX_EVENTS=1 ts-node omega-kernel.ts",
+    "v4:once": "ts-node -e \"import('./omega-core/v4/autonomyLoop').then(async m => console.log(JSON.stringify(await m.runAutonomyCycle([{ name: 'reasoning-node', image: 'omega/reasoning-node:latest', scale: 2, port: 8080 }]), null, 2)))\"",
+    "typecheck": "tsc --noEmit",
+    "deploy": "bash infra/scripts/deploy.sh",
+    "bootstrap": "bash scripts/bootstrap.sh"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

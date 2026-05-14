@@ -1,0 +1,113 @@
+name: OMEGA_PROJECT_NAME
+services:
+  redpanda:
+    image: redpandadata/redpanda:v24.3.1
+    command: redpanda start --overprovisioned --smp 1 --memory 1G --reserve-memory 0M --node-id 0 --check=false --kafka-addr 0.0.0.0:9092 --advertise-kafka-addr redpanda:9092
+    ports:
+      - "9092:9092"
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: omega
+      POSTGRES_USER: omega
+      POSTGRES_PASSWORD: omega-dev-password
+    ports:
+      - "5432:5432"
+  qdrant:
+    image: qdrant/qdrant:v1.12.4
+    ports:
+      - "6333:6333"
+  core-gateway:
+    build: ./services/core-gateway
+    environment:
+      OMEGA_NAMESPACE: OMEGA_NAMESPACE
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgresql://omega:omega-dev-password@postgres:5432/omega
+      QDRANT_URL: http://qdrant:6333
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redpanda
+      - redis
+      - postgres
+      - qdrant
+  omega-core:
+    image: node:22-alpine
+    working_dir: /workspace
+    command: sh -c "npm install && npm run core"
+    volumes:
+      - ./:/workspace
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - redpanda
+      - redis
+      - postgres
+      - qdrant
+  omega-system:
+    image: node:22-alpine
+    working_dir: /workspace
+    command: sh -c "npm install && npm run system"
+    volumes:
+      - ./:/workspace
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - redpanda
+      - redis
+      - postgres
+      - qdrant
+  omega-kernel:
+    image: node:22-alpine
+    working_dir: /workspace
+    command: sh -c "npm install && npm run kernel"
+    volumes:
+      - ./:/workspace
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - redpanda
+      - redis
+      - postgres
+      - qdrant
+  reasoning-node:
+    build: ./nodes/reasoning-node
+    environment:
+      NODE_ID: reasoning-node-1
+      NODE_ROLE: reasoning
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+    depends_on:
+      - redpanda
+  automation-node:
+    build: ./nodes/automation-node
+    environment:
+      NODE_ID: automation-node-1
+      NODE_ROLE: automation
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+    depends_on:
+      - redpanda
+  dashboard:
+    image: python:3.12-alpine
+    working_dir: /workspace/apps/dashboard
+    command: python -m http.server 5173
+    volumes:
+      - ./:/workspace
+    ports:
+      - "5173:5173"
+  grafana:
+    image: grafana/grafana:11.3.0
+    volumes:
+      - ./infra/docker/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    volumes:
+      - ./infra/docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
