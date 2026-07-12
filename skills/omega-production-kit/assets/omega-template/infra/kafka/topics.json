@@ -1,0 +1,12 @@
+{
+  "topics": [
+    { "name": "task.request", "partitions": 3, "retention_ms": 604800000 },
+    { "name": "task.execute", "partitions": 3, "retention_ms": 604800000 },
+    { "name": "task.complete", "partitions": 3, "retention_ms": 604800000 },
+    { "name": "node.health", "partitions": 3, "retention_ms": 86400000 },
+    { "name": "memory.write", "partitions": 3, "retention_ms": 2592000000 },
+    { "name": "dag.build", "partitions": 3, "retention_ms": 604800000 },
+    { "name": "system.alert", "partitions": 1, "retention_ms": 2592000000 },
+    { "name": "dead-letter", "partitions": 3, "retention_ms": 2592000000 }
+  ]
+}

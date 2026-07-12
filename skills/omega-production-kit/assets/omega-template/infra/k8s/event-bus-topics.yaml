@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omega-event-topics
+  namespace: OMEGA_NAMESPACE
+data:
+  topics: |
+    task.request
+    task.execute
+    task.complete
+    node.health
+    memory.write
+    dag.build
+    system.alert
+  routing: |
+    Voice Node -> Kafka Topic -> Brain Engine -> DAG Engine -> Executor -> Memory -> Dashboard

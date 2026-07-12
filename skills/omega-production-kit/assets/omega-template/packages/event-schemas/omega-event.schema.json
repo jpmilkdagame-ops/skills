@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omega.local/schemas/omega-event.schema.json",
+  "title": "Omega Event",
+  "type": "object",
+  "required": ["event_id", "timestamp", "source_node", "event_type", "priority", "payload", "trace_id", "schema_version"],
+  "properties": {
+    "event_id": {"type": "string", "format": "uuid"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "source_node": {"type": "string", "minLength": 1},
+    "target_node": {"type": "string"},
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "task.request", "task.decompose", "task.route", "task.execute", "task.complete", "task.failed",
+        "voice.transcribed", "vision.detected", "reasoning.plan", "automation.result",
+        "node.register", "node.heartbeat", "node.health.check", "node.scale.up", "node.failover",
+        "memory.write", "memory.retrieve", "memory.sync", "audit.record"
+      ]
+    },
+    "priority": {"type": "integer", "minimum": 0, "maximum": 10},
+    "trace_id": {"type": "string", "minLength": 1},
+    "correlation_id": {"type": "string"},
+    "schema_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "payload": {"type": "object"}
+  },
+  "additionalProperties": false
+}
