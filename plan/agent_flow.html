@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail Agent Flow - TAPS Aero</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #88d8ff;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .node {
+            background: linear-gradient(145deg, #2d3a5f, #1e2a45);
+            border-radius: 15px;
+            padding: 25px 30px;
+            color: #fff;
+            text-align: center;
+            min-width: 180px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 2px solid #4a6fa5;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(136, 216, 255, 0.3);
+        }
+        
+        .node-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .node-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #88d8ff;
+        }
+        
+        .node-desc {
+            font-size: 0.85rem;
+            color: #a0b4c8;
+            line-height: 1.4;
+        }
+        
+        .start-node {
+            background: linear-gradient(145deg, #2e7d32, #1b5e20);
+            border-color: #4caf50;
+        }
+        
+        .end-node {
+            background: linear-gradient(145deg, #c62828, #b71c1c);
+            border-color: #ef5350;
+        }
+        
+        .process-node {
+            background: linear-gradient(145deg, #1565c0, #0d47a1);
+            border-color: #42a5f5;
+        }
+        
+        .action-node {
+            background: linear-gradient(145deg, #6a1b9a, #4a148c);
+            border-color: #ab47bc;
+        }
+        
+        .connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #88d8ff;
+            font-size: 1.5rem;
+            padding: 10px;
+        }
+        
+        .arrow {
+            font-size: 2rem;
+            color: #88d8ff;
+        }
+        
+        .vertical-arrow {
+            font-size: 2rem;
+            color: #88d8ff;
+            transform: rotate(90deg);
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            border: 2px solid;
+        }
+        
+        .notes {
+            max-width: 800px;
+            margin: 40px auto 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            color: #a0b4c8;
+        }
+        
+        .notes h3 {
+            color: #88d8ff;
+            margin-bottom: 15px;
+        }
+        
+        .notes ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .notes li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .notes li:last-child {
+            border-bottom: none;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .node {
+                min-width: 140px;
+                padding: 20px;
+            }
+            
+            .row {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>✈️ Gmail Agent Flow</h1>
+    <p class="subtitle">TAPS Aero - Aircraft Parts Email Processing</p>
+    
+    <div class="flow-container">
+        <!-- Start -->
+        <div class="row">
+            <div class="node start-node">
+                <div class="node-icon">🚀</div>
+                <div class="node-title">Start Agent</div>
+                <div class="node-desc">Initialize with<br>OAuth credentials</div>
+            </div>
+        </div>
+        
+        <div class="arrow">⬇️</div>
+        
+        <!-- Authentication Row -->
+        <div class="row">
+            <div class="node process-node">
+                <div class="node-icon">🔐</div>
+                <div class="node-title">Authenticate</div>
+                <div class="node-desc">Gmail OAuth2<br>Authorization</div>
+            </div>
+        </div>
+        
+        <div class="arrow">⬇️</div>
+        
+        <!-- Read Emails -->
+        <div class="row">
+            <div class="node process-node">
+                <div class="node-icon">📬</div>
+                <div class="node-title">Read Emails</div>
+                <div class="node-desc">Fetch inbox emails<br>RFQs, inquiries</div>
+            </div>
+        </div>
+        
+        <div class="arrow">⬇️</div>
+        
+        <!-- Processing Row -->
+        <div class="row">
+            <div class="node action-node">
+                <div class="node-icon">🔍</div>
+                <div class="node-title">Extract Info</div>
+                <div class="node-desc">Part numbers<br>Pricing requests</div>
+            </div>
+            
+            <div class="arrow" style="align-self: center;">➡️</div>
+            
+            <div class="node action-node">
+                <div class="node-icon">✈️</div>
+                <div class="node-title">Categorize</div>
+                <div class="node-desc">Boeing/Airbus<br>Embraer/Gulfstream</div>
+            </div>
+            
+            <div class="arrow" style="align-self: center;">➡️</div>
+            
+            <div class="node action-node">
+                <div class="node-icon">👥</div>
+                <div class="node-title">Find Buyers</div>
+                <div class="node-desc">Match parts to<br>potential buyers</div>
+            </div>
+        </div>
+        
+        <div class="arrow">⬇️</div>
+        
+        <!-- Actions Row -->
+        <div class="row">
+            <div class="node action-node">
+                <div class="node-icon">📤</div>
+                <div class="node-title">Send Emails</div>
+                <div class="node-desc">Notify buyers<br>with quotes</div>
+            </div>
+            
+            <div class="arrow" style="align-self: center;">➡️</div>
+            
+            <div class="node action-node">
+                <div class="node-icon">🏷️</div>
+                <div class="node-title">Apply Labels</div>
+                <div class="node-desc">Track processed<br>emails</div>
+            </div>
+            
+            <div class="arrow" style="align-self: center;">➡️</div>
+            
+            <div class="node action-node">
+                <div class="node-icon">📊</div>
+                <div class="node-title">Generate Report</div>
+                <div class="node-desc">Daily summary<br>of activities</div>
+            </div>
+        </div>
+        
+        <div class="arrow">⬇️</div>
+        
+        <!-- End -->
+        <div class="row">
+            <div class="node end-node">
+                <div class="node-icon">✅</div>
+                <div class="node-title">Complete</div>
+                <div class="node-desc">Wait for next<br>scheduled run</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background: #2e7d32; border-color: #4caf50;"></div>
+            <span>Start/End</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #1565c0; border-color: #42a5f5;"></div>
+            <span>Processing</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #6a1b9a; border-color: #ab47bc;"></div>
+            <span>Actions</span>
+        </div>
+    </div>
+    
+    <div class="notes">
+        <h3>📝 Notes</h3>
+        <ul>
+            <li><strong>Authentication:</strong> Uses OAuth2 with Gmail API - requires credentials.json from Google Cloud Console</li>
+            <li><strong>Email Filtering:</strong> Agent filters for RFQs, quotes, and parts inquiries using smart search queries</li>
+            <li><strong>Categorization:</strong> Automatically detects aircraft type from part numbers and email content</li>
+            <li><strong>Buyer Matching:</strong> Uses LLM to match part requirements with appropriate buyers in database</li>
+            <li><strong>Safety:</strong> Confirmation mode enabled for sending emails to prevent errors</li>
+            <li><strong>Logging:</strong> All actions logged to terminal for transparency and audit trail</li>
+        </ul>
+    </div>
+</body>
+</html>
